@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CONTENTS</title>
+<title>contents</title>
 <style id="applicationStylesheet" type="text/css">
 	.mediaViewInfo {
 		--web-view-name: Web 1920 – 2;
@@ -93,6 +93,66 @@
 		left: 20px;
 		top: 396px;
 		overflow: visible;
+	}
+	#Component_1___1 {
+		position: absolute;
+		width: 112px;
+		height: 35px;
+		left: 1202px;
+		top: 489px;
+		overflow: visible;
+	}
+	.Rectangle_1_p {
+		position: absolute;
+		overflow: visible;
+		width: 112px;
+		height: 35px;
+		left: 0px;
+		top: 0px;
+	}
+	#Component_1___2 {
+		position: absolute;
+		width: 112px;
+		height: 35px;
+		left: 627px;
+		top: 489px;
+		overflow: visible;
+	}
+	.Rectangle_1_s {
+		position: absolute;
+		overflow: visible;
+		width: 112px;
+		height: 35px;
+		left: 0px;
+		top: 0px;
+	}
+	#PREV {
+		position: absolute;
+		left: 657px;
+		top: 495px;
+		overflow: visible;
+		width: 53px;
+		white-space: nowrap;
+		text-align: center;
+		font-family: Helvetica Neue;
+		font-style: normal;
+		font-weight: normal;
+		font-size: 20px;
+		color: rgba(255,255,255,1);
+	}
+	#NEXT {
+		position: absolute;
+		left: 1233px;
+		top: 495px;
+		overflow: visible;
+		width: 51px;
+		white-space: nowrap;
+		text-align: center;
+		font-family: Helvetica Neue;
+		font-style: normal;
+		font-weight: normal;
+		font-size: 20px;
+		color: rgba(255,255,255,1);
 	}
 </style>
 <script id="applicationScript">
@@ -2530,6 +2590,32 @@ window.application = new Application();
 	</div>
 	<img id="problem_2x" src="img/problem_2x.png">
 	<img id="standing_5" src="img/standing_5.png">
+	<div id="Component_1___1" class="Component_1___1">
+		<svg class="Rectangle_1_p">
+			<linearGradient id="Rectangle_1_p" spreadMethod="pad" x1="0" x2="1" y1="0.5" y2="0.5">
+				<stop offset="0" stop-color="#fc93db" stop-opacity="1"></stop>
+				<stop offset="1" stop-color="#5508d1" stop-opacity="1"></stop>
+			</linearGradient>
+			<rect fill="url(#Rectangle_1_p)" id="Rectangle_1_p" rx="17.5" ry="17.5" x="0" y="0" width="112" height="35">
+			</rect>
+		</svg>
+	</div>
+	<div id="Component_1___2" class="Component_1___2">
+		<svg class="Rectangle_1_s">
+			<linearGradient id="Rectangle_1_s" spreadMethod="pad" x1="0" x2="1" y1="0.5" y2="0.5">
+				<stop offset="0" stop-color="#5508d1" stop-opacity="1"></stop>
+				<stop offset="1" stop-color="#fc93db" stop-opacity="1"></stop>
+			</linearGradient>
+			<rect fill="url(#Rectangle_1_s)" id="Rectangle_1_s" rx="17.5" ry="17.5" x="0" y="0" width="112" height="35">
+			</rect>
+		</svg>
+	</div>
+	<div id="PREV">
+		<a href="index.html"><span style="color: white; text-decoration:none">PREV</span></a>
+	</div>
+	<div id="NEXT">
+		<span>NEXT</span>
+	</div>
 </div>
 </body>
 </html>

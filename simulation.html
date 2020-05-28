@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">  
+	<title>SIMULATION</title>
+
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+	<link rel="stylesheet" type="text/css" media="screen" href="elements/css/style.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="elements/css/jquery-ui-1.8.18.custom.css" />
+	<style type="text/css">
+		ul.menu{
+			padding-left: 0px;
+		}
+		ul.menu > li{
+			list-style-type: none;
+		}
+		
+		
+		g.sendrec .top{
+			fill: #00adef !important;
+		}
+		g.sendrec .side{
+			fill: #80d6f7 !important;
+		}
+		g.sendrec .front{
+			fill: #cceffc !important;
+		}
+		
+	</style>  
+	<script type="text/javascript" src="elements/js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript" src="elements/js/modernizr.js"></script>
+	<script type="text/javascript" src="elements/js/global.js"></script>
+	<script type="text/javascript" src="elements/js/jquery-ui-1.8.18.custom.min.js"></script>
+	<script>
+		$(window).load(function(){
+			checkFeatures({
+				inlinesvg: true,
+				canvas: false
+			});
+			
+			init();
+		});
+		
+		/* constants */
+		var lineLength = 502;
+		var linePadding = 48;
+		var delay = 50;
+		
+		var tick = 1E-5;
+
+		/* globals */
+		var running = false;
+		var timer;
+		
+		var packet;
+		var timetext;
+		var proptimetext;
+		var sender;
+		var receiver;
+		
+		var startButton;
+		
+		var length;
+		var rate;
+		var size;
+		var time;
+		var emissionTime;
+		var propagation = 2.8E+8;
+
+		function init(){
+			startButton = document.getElementById('startButton');
+			$(startButton).removeAttr('disabled');
+			
+			svgElement = document.getElementById('svg2');
+			packet = document.getElementById('packet');
+			timetext = document.getElementById('timetext');
+			proptimetext = document.getElementById('proptimetext');
+			sender = document.getElementById('sender');
+			receiver = document.getElementById('receiver');
+		}
+
+		function startAnim(){   
+			if(running == true){   
+				clearInterval(timer);
+			}
+			
+			// read selected values
+			length = Number(document.getElementById('lengthSelect').value)*1000;
+			rate = Number(document.getElementById('rateSelect').value);
+			size = Number(document.getElementById('sizeSelect').value);
+			propagation = Number(document.getElementById('propagation').value)*1E8;
+			
+			packet.setAttribute("visibility", "visible");
+			
+			time = 0;
+			emissionTime = 0;
+			
+			
+			//compute packet length
+			var packetLength = (size/rate)*propagation*lineLength/length;
+			packet.setAttribute("x", -packetLength);
+			packet.setAttribute("width", packetLength);
+			
+			timer = setInterval(doAnim, delay);
+			startButton.startButtonClicked = true;
+		}
+
+		function doAnim(){       
+			if (packet.getAttribute("x") >= lineLength+linePadding){
+				clearInterval(timer);
+				running = false;
+				receiver.setAttribute('class', '');
+				return;
+			}
+			
+			//compute time units
+			var xfirst = time-emissionTime;
+			var xlast = xfirst-(size/rate);
+			
+			//compute position
+			xfirst=xfirst*propagation*lineLength/length;
+			xlast=xlast*propagation*lineLength/length;
+			
+			if(xlast < 0)
+				xlast = 0;
+			
+			var width = Math.max((Math.min(xfirst, (lineLength)) - xlast), 0);
+			
+			packet.setAttribute('width', width);
+
+			//draw
+			packet.setAttribute('x', xlast+linePadding);
+			
+			
+			timetext.textContent = "total delay: " + (time*1000).toFixed(3) + " ms";
+			if(xfirst <= lineLength){
+				proptimetext.textContent = "propagation delay: " + (time*1000).toFixed(3) + " ms";
+			}
+			
+			
+			sender.setAttribute('class', (xlast <= 0) ? 'sendrec' : '');
+			receiver.setAttribute('class', (xfirst >= lineLength) ? 'sendrec' : '');
+			
+			time += tick;
+		}
+		
+		$(document).ready(function(){
+			rangeInputCompability();
+		});
+		
+		function preFix(n){
+			if(n >= 1e9)
+				return (n/1e9)+' g';
+			if(n >= 1e6)
+				return (n/1e6)+' m';
+			if(n >= 1e3)
+				return (n/1000)+' k';
+			return n+' ';
+		}
+	</script>  
+</head>
+
+<body>
+	<h1>SIMULATION</h1>
+	<p>This animation illustrates the difference between transmission and total delay.</p>
+	
+	<form class="config">
+		<h2>configuration</h2>
+		<div class="form-item">
+			<h3><label for="lengthSelect">length</label></h3>
+			
+			<input type="range" value="10" min="10" max="1000" step="2" id="lengthSelect" onchange="$('#lengthSelect2').attr('value', this.value + ' km');"/>
+			<input type="text" value="10 km" id="lengthSelect2" disabled="disabled" size="7" />
+			
+			<div class="description">sets the distance between sender and receiver in km</div>
+		</div>
+		<div class="form-item">
+			<h3><label for="rateSelect">rate</label></h3>
+			
+			<input type="range" value="500000" min="500000" max="1000000000" step="500000" id="rateSelect" onchange="$('#rateSelect2').attr('value', preFix(this.value)+'bps');"/>
+			<input type="text" value="500 kbps" id="rateSelect2" disabled="disabled" size="11" />
+			
+			<div class="description">sets the data rate</div>
+		</div>
+		
+		<div class="form-item">
+			<h3><label for="propagation">propagation</label></h3>
+			
+			<input type="range" value="2.8" min="1.0" max="2.9" step="0.1" id="propagation" onchange="$('#propagation2').attr('value', this.value.toString()+'e8 m/s');"/>
+			<input type="text" value="2.8e8 m/s" id="propagation2" disabled="disabled" size="9" />
+			
+			<div class="description">sets the propagation speed</div>
+		</div>
+		
+		<div class="form-item">
+			<h3><label for="sizeSelect">size</label></h3>
+			
+			<select id="sizeSelect">
+				<option value="8E2">100 Bytes</option>
+				<option value="4E3">500 Bytes</option>
+				<option value="8E3">1 kBytes</option>
+			</select>
+			<div class="description">sets the size of the data</div>
+		</div>
+		<div class="form-item">
+			<h3><label for="startButton">start</label></h3>
+			<button id="startButton" type="button" onclick="startAnim();" disabled="disabled">Start</button>
+			<div class="description">starts or restarts the simulation</div>
+		</div>
+	</form>
+
+<div class="simulation" style="width: 800px">
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.1"
+   width="800"
+   height="80"
+   viewBox="0 0 600 60"
+   id="svg2"
+   >
+  <defs
+     id="defs4">
+    <mask
+       id="mask3866">
+      <rect
+         width="502"
+         height="10"
+         x="48"
+         y="32"
+         id="packetmask"
+         style="fill:#ffffff;fill-opacity:1;stroke:none" />
+    </mask>
+  </defs>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="matrix(0.23437498,0,0,0.33018868,-25.349729,-217.99218)"
+     id="sender">
+    <rect
+       width="170"
+       height="85"
+       x="129.49219"
+       y="741.77625"
+       id="rect4024"
+       style="fill:#a7a5a6;fill-opacity:1;stroke:none"
+	   class="front" />
+    <path
+       d="m 299.4922,826.7763 22,-21 0,-85 -22,21 z"
+       id="path4026"
+       style="fill:#d3d2d2;fill-opacity:1;stroke:none"
+	   class="side" />
+    <path
+       d="m 151.49219,720.7763 170.00001,0 -22,21 -170.00001,0 z"
+       id="path4028"
+       style="fill:#7b7979;fill-opacity:1;stroke:none"
+	   class="top" />
+  </g>
+  <rect
+     width="502.99997"
+     height="11"
+     x="47.5"
+     y="31.5"
+     id="rect3851"
+     style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.99999982;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+  <g
+     transform="matrix(0.23437498,0,0,0.33018868,519.65027,-217.99218)"
+     id="receiver">
+    <rect
+       width="170"
+       height="85"
+       x="129.49219"
+       y="741.77625"
+       id="rect4024-8"
+       style="fill:#a7a5a6;fill-opacity:1;stroke:none"
+	   class="front" />
+    <path
+       d="m 299.4922,826.7763 22,-21 0,-85 -22,21 z"
+       id="path4026-0"
+       style="fill:#d3d2d2;fill-opacity:1;stroke:none"
+	   class="side" />
+    <path
+       d="m 151.49219,720.7763 170.00001,0 -22,21 -170.00001,0 z"
+       id="path4028-4"
+       style="fill:#7b7979;fill-opacity:1;stroke:none"
+	   class="top" />
+  </g>
+  <text
+     x="300"
+     y="55.815918"
+     id="text3853"
+     xml:space="preserve"
+     text-anchor="middle"
+     style="font-size:13px;font-style:normal;font-weight:normal;line-height:124.00000095%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"><tspan
+       x="300"
+       y="55.815918"
+       id="timetext">total delay: 0.000 ms</tspan></text>
+  <text
+     x="300"
+     y="20"
+     id="text3853"
+     xml:space="preserve"
+     text-anchor="middle"
+     style="font-size:13px;font-style:normal;font-weight:normal;line-height:124.00000095%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"><tspan
+       x="300"
+       y="28"
+       id="proptimetext">propagation delay: 0.000 ms</tspan></text>
+  <text
+     x="9.1430664"
+     y="18.815918"
+     id="text3853-6"
+     xml:space="preserve"
+     style="font-size:13px;font-style:normal;font-weight:normal;line-height:124.00000095%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"><tspan
+       x="9.1430664"
+       y="18.815918"mask="url(#mask3866)"
+       id="timetext-5">Sender</tspan></text>
+  <text
+     x="538.72412"
+     y="18.815918"
+     id="text3853-6-3"
+     xml:space="preserve"
+     style="font-size:13px;font-style:normal;font-weight:normal;line-height:124.00000095%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"><tspan
+       x="538.72412"
+       y="18.815918"
+       id="timetext-5-1">Receiver</tspan></text>
+  <rect
+     width="502"
+     height="10"
+     x="48"
+     y="32"
+     
+     id="packet"
+     style="fill:#00adef;fill-opacity:1;stroke:none" />
+</svg>
+</div>
+
+
+</body>
+</html>

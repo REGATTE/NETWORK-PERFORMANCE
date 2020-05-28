@@ -1,0 +1,296 @@
+
+ body {
+    margin: 0;
+    padding: 10px;
+    background: #fff;
+    font: 12.2px Verdana, sans-serif;
+    color: #000;
+    text-align: left;
+  }
+  
+  input, textarea, select {
+      color: #000;
+      font-size: 1em;
+  }
+  
+  h1,h2,h3,h4,h5,h6 {
+    margin: 0;
+    padding: 0;
+    font-weight: normal;
+    font-family: Helvetica, Arial, sans-serif;
+  }
+  
+  h1 {
+    font-size: 1.7em;
+  }
+  
+  h2 {
+    font-size: 1.6em;
+    line-height: 130%;
+  }
+  
+  h3 {
+    font-size: 1.6em;
+  }
+  
+  h4 {
+    font-size: 1.3em;
+  }
+  
+  h5 {
+    font-size: 1.2em;
+  }
+  
+  h6 {
+    font-size: 1.1em;
+  }
+  
+  quote, code, fieldset {
+    margin: .5em 0;
+  }
+  
+  code, pre, kbd {
+    font-size: 115%;
+  }
+  
+  p {
+    margin: 0.6em 0 1.2em;
+    padding: 0;
+  }
+  
+  a:link,
+  a:visited {
+    color: #00adef;
+    text-decoration: underline;
+  }
+  
+  a:hover {
+    color: #141309;
+    text-decoration: underline;
+  }
+  
+  a:active,
+  a.active {
+    color: #555555;
+  }
+  
+  hr {
+    margin: 0;
+    padding: 0;
+    border: none;
+    height: 1px;
+    background: #4f4f4f;
+  }
+  
+  ul, ol {
+    margin: 0.5em 0 1em;
+    padding: 0 0 0 1.5em; /* LTR */
+  }
+  
+  
+  dl {
+    margin: 0.5em 0 1em 1.5em; /* LTR */
+  }
+  
+  dl dt {
+  }
+  
+  dl dd {
+    margin: 0 0 .5em 1.5em; /* LTR */
+  }
+  
+  img,
+  a img {
+    border: none;
+  }
+  
+  table, td, th{
+      border-collapse: collapse;
+      border: 1px solid #00ADEF;
+      padding: 2px;
+      vertical-align: top;
+  }
+  
+  
+  th{
+      font-size: 0.8em;
+      text-align: left;
+      background: #ffffff url(../images/gradient-inner.png) repeat-x 0 0;
+      padding: 3px;
+  }
+  
+  
+  .browser-features-missing{
+      background-color: #FFBDBE;
+      border: 3px solid red;
+      
+      -webkit-border-radius: 10px;
+      -moz-border-radius: 10px;
+      border-radius: 10px;
+      
+      padding: 15px;
+      margin-bottom: 32px;
+  }
+  
+  
+  /* config */
+  
+  .config, .legend, .def{
+      background: #ffffff url(../images/gradient-inner.png) repeat-x 0 0;
+      
+      border: 2px solid #00adef;
+      -webkit-border-radius: 10px;
+      -moz-border-radius: 10px;
+      border-radius: 10px;
+      
+      margin: 10px 10px 10px 0px;
+      padding: 1em 1em 1.5em;
+  }
+  
+  .config{
+      -webkit-column-width: 20em;
+      -webkit-column-gap: 20px;
+      -moz-column-width: 20em;
+      -moz-column-gap: 20px;
+      column-width: 20em;
+      column-gap: 20px;
+  }
+  
+  
+  .config > .form-item{
+      margin-bottom: 1em;
+      margin-top: 1em;
+      
+      padding-left: 2em;
+      
+      break-inside: avoid;
+      -moz-column-break-inside: avoid;
+      -webkit-column-break-inside: avoid;
+      -moz-break-inside: avoid;
+      
+      display: inline-block;
+      
+      width: 20em;
+  }
+  
+  .config .form-item.disable.disabled{
+      background-color: silver;
+      -webkit-border-radius: 4px;
+      -moz-border-radius: 4px;
+      border-radius: 4px;
+  }
+  
+  /* keep heading out of column layout */
+  .config > h2:first-child{
+      position: absolute;
+  }
+  .config > *:nth-child(2){
+      margin-top: 2.5em;
+  }
+  
+  
+  
+  .config > .form-item > h3{
+      font-size: inherit;
+      font-weight: bold;
+      font-family: inherit;
+      
+      margin-left: -2em;
+  }
+  
+  .config label{
+      display: block;
+      
+  }
+  
+  .config label.option{
+      display: inline;
+      font-weight: normal;
+  }
+  
+  .config .description{
+      font-size: 0.92em;
+      color: #000;
+      line-height: 150%;
+      margin-top: 0.4em;
+      margin-bottom: 0.75em;
+  }
+  
+  .config input{
+      font-size: 1em;
+  }
+  
+  
+  
+  /* legend */
+  
+  .legend{
+      float: left;
+  }
+  
+  .legend table, .legend td, .legend th{
+      border-style: none;
+  }
+  
+  /* simulation */
+  .simulation{
+      -moz-box-shadow: 10px 10px 5px #888;
+      -webkit-box-shadow: 10px 10px 5px #888;
+      box-shadow: 10px 10px 5px #888;
+      padding: 1em 0 1em 0;
+      border: 1px solid black;
+      overflow: hidden;
+  }
+  
+  /* input range fix for android stock browser (http://tiffanybbrown.com/2012/02/07/input-typerange-and-androids-stock-browser/)*/
+  input[type=range]{
+      background: #D8D8D8;
+      height: auto;
+  }
+  
+  input[type=range]::-webkit-slider-thumb{
+      background: #00adef;
+      height: 30px;
+      width: 30px;
+      border-radius: 30px;
+  }
+  
+  
+  @media screen and (min-width: 1200px){
+      /*body{
+          padding-left: 5em;
+      }
+      body > h1:first-child{
+          -moz-transform: rotate(90deg);
+          -moz-transform-origin: left bottom;
+          -o-transform: rotate(90deg);
+          -o-transform-origin: left bottom;
+          -webkit-transform: rotate(90deg);
+          -webkit-transform-origin: left bottom;
+          transform: rotate(90deg);
+          transform-origin: left bottom;
+          
+          
+          font-size: 5em;
+          margin-left: -1.2em;
+          position: absolute;
+          top: -1em;
+      }*/
+  }
+  
+  /*@media handheld and (orientation: landscape), screen and (orientation: landscape) and (max-height: 550px)
+      , screen and (max-width: 550px) {
+      
+      body.mobile > *:not(.simulation){
+          display: none;
+      }
+      body.mobile .simulation{
+          margin: 0px;
+          border: 0px;
+          -moz-box-shadow: 0 0 0 0 #888;
+          -webkit-box-shadow: 0 0 0 0 #888;
+          box-shadow: 0 0 0 0 #888;
+      }
+      body.mobile{
+      }
+  }*/
